@@ -26,9 +26,11 @@ const TodoKanBan: React.FC = () => {
   useLoadStorage();
   useSaveStorage();
 
-  const todos = useSelector((state: RootState) => state.todos);
-  const filters = useSelector((state: RootState) => state.filter);
-  const sort = useSelector((state: RootState) => state.sort);
+  const { todos, filters, sort } = useSelector(({ todos, filters, sort }: RootState) => ({
+    todos,
+    filters,
+    sort,
+  }));
 
   const modifiedTodos = useFilterAndSrot(todos, filters, sort);
 

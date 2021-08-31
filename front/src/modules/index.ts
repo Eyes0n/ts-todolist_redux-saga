@@ -5,7 +5,7 @@ import sortReducer from './sort';
 
 const rootReducer = combineReducers({
   todos: todosReducer,
-  filter: filterReducer,
+  filters: filterReducer,
   sort: sortReducer,
 });
 
