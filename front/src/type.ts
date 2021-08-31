@@ -41,3 +41,11 @@ export type SortOptions = {
   sortBy: null | string;
   order: OrderType;
 };
+
+export type CreateTodoType = {
+  task: string;
+  priority: Priority;
+  status: Status;
+  deadLine: Date;
+  createdAt: Date;
+};

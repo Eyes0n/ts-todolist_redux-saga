@@ -4,7 +4,8 @@ import { faTrashAlt, faPen } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { ITodo } from 'type';
 import { dateToString } from 'utils/commons';
-import { useTodoAndDispatchContext } from 'context/TodoContext';
+import { useDispatch } from 'react-redux';
+import { removeTodo } from 'modules/todos';
 
 interface ITodoProps {
   todo: ITodo;
@@ -21,11 +22,11 @@ const TodoItem: React.FC<ITodoProps> = ({
   onDragEnter,
   onDragOver,
 }) => {
-  const { dispatch } = useTodoAndDispatchContext();
   const { task, priority, deadLine, status } = todo;
+  const dispatch = useDispatch();
 
   const handleDeleteTodo = () => {
-    dispatch({ type: 'REMOVE', id: todo.id });
+    dispatch(removeTodo(todo.id));
   };
 
   return (

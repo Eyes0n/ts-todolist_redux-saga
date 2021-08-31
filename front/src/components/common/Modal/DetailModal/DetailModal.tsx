@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { ITodo, IEditTodo, Priority, Status } from 'type';
 import Modal, { IModal } from '../Modal';
 import { dateToString } from 'utils/commons';
-import { useTodoAndDispatchContext } from 'context/TodoContext';
 import { ApplyButton } from '../Button';
 import { PRIORITY_RANGE, STATUS_RANGE } from 'utils/constants';
 import ModalDatePicker from '../Form/ModalDatePicker';
 import ModalRadioForm from '../Form/ModalRadioForm';
 import { getKoreaTime, getMaxDate } from 'utils/commons';
+import { useDispatch } from 'react-redux';
+import { updateTodo } from 'modules/todos';
 
 interface IDetailModal extends IModal {
   item: ITodo;
@@ -16,9 +17,10 @@ interface IDetailModal extends IModal {
 
 const DetailModal: React.FC<IDetailModal> = ({ item, visible, onClose }) => {
   const { createdAt, updatedAt } = item;
-  const { dispatch } = useTodoAndDispatchContext();
   const [editTodo, setEditTodo] = useState<IEditTodo>(item);
   const { task, priority, status, deadLine } = editTodo;
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setEditTodo(item);
   }, [item]);
@@ -39,7 +41,7 @@ const DetailModal: React.FC<IDetailModal> = ({ item, visible, onClose }) => {
       alert('할 일을 입력하세요!');
       return;
     }
-    dispatch({ type: 'EDIT', editTodo: editTodo });
+    dispatch(updateTodo(editTodo));
     onClose();
   };
 

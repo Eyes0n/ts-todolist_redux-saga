@@ -7,13 +7,13 @@ import { faSortAmountDown, faFilter, faPlus } from '@fortawesome/free-solid-svg-
 import useModal from 'hooks/useModal';
 import { Status, Priority } from 'type';
 import { PRIORITY_RANGE } from 'utils/constants';
-import { useTodoAndDispatchContext } from 'context/TodoContext';
 import FilterModal from 'components/common/Modal/FilterModal';
 import SortModal from 'components/common/Modal/SortModal';
 import ConfirmModal from 'components/common/Modal/ConfirmModal';
+import { useDispatch } from 'react-redux';
+import { createTodo } from 'modules/todos';
 
 const TodoFilter = (): JSX.Element => {
-  const { dispatch } = useTodoAndDispatchContext();
   const [filterVisible, openFilter, closeFilter] = useModal(false);
   const [sortVisible, openSort, closeSort] = useModal(false);
   const [confirmVisible, openConfirm, closeConfirm] = useModal(false);
@@ -31,6 +31,7 @@ const TodoFilter = (): JSX.Element => {
     status: Status.NOT_STARTED,
     createdAt: new Date(),
   });
+  const dispatch = useDispatch();
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     setInputValue({ ...inputValue, [event.target.name]: event.target.value });
@@ -60,7 +61,7 @@ const TodoFilter = (): JSX.Element => {
       openConfirm();
       return;
     }
-    dispatch({ type: 'CREATE', todo: inputValue });
+    dispatch(createTodo(inputValue));
     onInputReset();
   };
 
