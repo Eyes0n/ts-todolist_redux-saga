@@ -5,7 +5,9 @@ import { useLoadStorage, useSaveStorage } from 'hooks/useStorage';
 import TodoList from './TodoList/TodoList';
 import useModal from 'hooks/useModal';
 import DetailModal from 'components/common/Modal/DetailModal';
-import { useTodoAndDispatchContext } from 'context/TodoContext';
+import { useSelector } from 'react-redux';
+import { RootState } from 'modules';
+import { useFilterAndSrot } from 'hooks/useFilterAndSort';
 
 const defaultModal: ITodo = {
   id: 0,
@@ -18,21 +20,26 @@ const defaultModal: ITodo = {
 };
 
 const TodoKanBan: React.FC = () => {
-  useLoadStorage();
-  useSaveStorage();
   const [modalVisible, openModal, closeModal] = useModal(false);
   const [detailTodo, setDetailTodo] = useState<ITodo | null>(null);
+
+  useLoadStorage();
+  useSaveStorage();
+
+  const todos = useSelector((state: RootState) => state.todos);
+  const filters = useSelector((state: RootState) => state.filter);
+  const sort = useSelector((state: RootState) => state.sort);
+
+  const modifiedTodos = useFilterAndSrot(todos, filters, sort);
+
+  const preTodo = modifiedTodos.filter((todo) => todo.status === Status.NOT_STARTED);
+  const ingTodo = modifiedTodos.filter((todo) => todo.status === Status.IN_PROGRESS);
+  const endTodo = modifiedTodos.filter((todo) => todo.status === Status.FINISHED);
 
   const openDetail = (item: ITodo) => {
     setDetailTodo(item);
     openModal();
   };
-
-  const { modifiedTodos } = useTodoAndDispatchContext();
-
-  const preTodo = modifiedTodos.filter((todo) => todo.status === Status.NOT_STARTED);
-  const ingTodo = modifiedTodos.filter((todo) => todo.status === Status.IN_PROGRESS);
-  const endTodo = modifiedTodos.filter((todo) => todo.status === Status.FINISHED);
 
   return (
     <TodoKanBanContainer>

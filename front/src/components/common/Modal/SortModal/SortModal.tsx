@@ -1,10 +1,11 @@
-import { useTodoAndDispatchContext } from 'context/TodoContext';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { OrderType } from 'type';
 import Modal, { IModal } from '../Modal';
 import ModalRadioForm from '../Form/ModalRadioForm';
 import { ApplyButton } from '../Button';
+import { useDispatch } from 'react-redux';
+import { changeSort } from 'modules/sort';
 
 export interface ISortOption {
   sortBy: null | string;
@@ -25,14 +26,15 @@ const orderOptionList: ('DESC' | 'ASC')[] = ['DESC', 'ASC'];
 
 const SortModal: React.FC<ISortModal> = ({ sortOptions = defaultSortOption, visible, onClose }) => {
   const [sort, setSort] = useState<ISortOption>(sortOptions);
-  const { dispatch } = useTodoAndDispatchContext();
+  const dispatch = useDispatch();
+
   const handleSort = (key: string, option: string | null) => {
     setSort((prev) => {
       return { ...prev, [key]: option };
     });
   };
   const applySort = () => {
-    dispatch({ type: 'SORT', sort: sort });
+    dispatch(changeSort(sort));
     onClose();
   };
 

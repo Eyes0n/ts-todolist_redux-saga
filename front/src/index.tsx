@@ -1,14 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { TodoProvider } from 'context/TodoContext';
 import App from './App';
 import GlobalStyle from './style/global';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import rootReducer from 'modules';
+
+const store = createStore(rootReducer);
 
 ReactDOM.render(
   <React.StrictMode>
-    <TodoProvider>
+    <Provider store={store}>
       <App />
-    </TodoProvider>
+    </Provider>
     <GlobalStyle />
   </React.StrictMode>,
   document.getElementById('root'),

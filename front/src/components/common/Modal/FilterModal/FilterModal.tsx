@@ -6,8 +6,9 @@ import { ApplyButton } from '../Button';
 import { PRIORITY_RANGE } from 'utils/constants';
 import FilterToggleList from './FilterToggleList';
 import ModalDatePicker from '../Form/ModalDatePicker';
-import { useTodoAndDispatchContext } from 'context/TodoContext';
 import { getMaxDate, getMinDate, getKoreaTime } from 'utils/commons';
+import { useDispatch } from 'react-redux';
+import { changeFilter } from 'modules/filter';
 
 export interface IFilterOptions {
   status: Status[];
@@ -34,7 +35,7 @@ const FilterModal: React.FC<IFilterModal> = ({
   onClose,
 }) => {
   const [filter, setFilter] = useState<IFilterOptions>(filterOptions);
-  const { dispatch } = useTodoAndDispatchContext();
+  const dispatch = useDispatch();
 
   const handleFilter = (key: string, option: (Priority | Status)[] | Date | null) => {
     setFilter((prev) => {
@@ -48,7 +49,7 @@ const FilterModal: React.FC<IFilterModal> = ({
       return;
     }
 
-    dispatch({ type: 'FILTER', filters: filter });
+    dispatch(changeFilter(filter));
     onClose();
   };
 
