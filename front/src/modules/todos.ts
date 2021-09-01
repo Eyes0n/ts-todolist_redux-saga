@@ -32,6 +32,7 @@ export interface updateAction {
   editTodo: IEditTodo;
 }
 
+// 비동기 요청을 위한 request success failure 경우에 대해 각각 액션 생성 함수 생성
 export const loadTodos = () => ({ type: LOAD_TODOS_REQUEST });
 export const loadTodosSuccess = (todos: ITodo[]) => ({ type: LOAD_TODOS_SUCCESS, todos });
 export const loadTodosFailure = (error: any) => ({ type: LOAD_TODOS_FAILURE, error });
@@ -73,6 +74,8 @@ const initialState: todoState = {
   error: '',
 };
 
+// todo리듀서 생성
+// 각 액션 타입에 따른 로직 처리의 결과로 상태를 갱신
 const todosReducer = (state: todoState = initialState, action: todosAction): todoState => {
   switch (action.type) {
     case LOAD_TODOS_REQUEST:

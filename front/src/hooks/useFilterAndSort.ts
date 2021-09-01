@@ -1,6 +1,7 @@
 import { ISortOption } from './../components/common/Modal/SortModal/SortModal';
 import { ITodo, Priority, OrderType, IFilterOptions } from './../type';
 
+// filter와 sort를 적용한 todos를 반환하는 hook
 export const useFilterAndSrot = (
   todos: ITodo[],
   filters: IFilterOptions,
@@ -11,19 +12,22 @@ export const useFilterAndSrot = (
 
   let modifiedTodos: ITodo[] = [...todos];
 
-  // filter
+  // filter조건과 priority에 따른 필터링
   if (filters.priority.length) {
     modifiedTodos = modifiedTodos?.filter((todo) => filters.priority.includes(todo.priority));
   }
 
+  // 최소일 보다 큰 마감기간
   const startDateFilter = (start: Date | null, target: Date): boolean => {
     return (start !== null && target >= start) || start === null;
   };
 
+  // 최대일 보다 작은 마감기간
   const endDateFilter = (end: Date | null, target: Date): boolean => {
     return (end !== null && target <= end) || end === null;
   };
 
+  // 마감기간이 최소일과 최대일 범위에 있는 todo들 필터링
   if (startDate || endDate) {
     modifiedTodos = modifiedTodos.filter(
       (todo) =>
@@ -32,7 +36,7 @@ export const useFilterAndSrot = (
     );
   }
 
-  // sort
+  // sortBy(정렬 기준 값)에 따른 정렬된 todo들을 반환
   const sortDate = (prev: Date, next: Date, order: OrderType): number => {
     return order === 'ASC'
       ? new Date(prev).valueOf() - new Date(next).valueOf()
@@ -55,6 +59,7 @@ export const useFilterAndSrot = (
     ];
   }
 
+  // enum 타입의 Priority를 숫자로 변환시키는 함수
   const convertPriority = (target: Priority): number => {
     switch (target) {
       case 'LOW':
@@ -68,6 +73,7 @@ export const useFilterAndSrot = (
     }
   };
 
+  // 우선 순위에 따른 정렬된 todos를 반환하는 함수
   const prioritySort = (prev: Priority, next: Priority, order: OrderType): number => {
     const convertedPrev: number = convertPriority(prev);
     const convertedNext: number = convertPriority(next);
