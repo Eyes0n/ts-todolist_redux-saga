@@ -1,14 +1,14 @@
-const express = require('express');
-const cors = require('cors');
-const { json } = require('body-parser');
+import { Todo, EditTodo } from './type';
+import express, { Express, Request, Response } from 'express';
+import cors from 'cors';
 
-const app = express();
-const PORT = 8080;
+const app: Express = express();
+const PORT: number = 8080;
 
 app.use(cors());
-app.use(json());
+app.use(express.json());
 
-let todos = [
+let todos: Todo[] = [
   {
     task: '1',
     deadLine: '2021-08-31T06:41:21.305Z',
@@ -128,40 +128,58 @@ let todos = [
   },
 ];
 
-app.get('/todos', (req, res) => res.send(todos));
-
-app.post('/todo', (req, res) => {
-  const todo = req.body.todo;
-  const nextId = todos.length
-    ? Math.max(...todos.map((todo) => todo.id)) + 1
-    : 1;
-  const newTodo = { id: nextId, ...todo, updatedAt: todo.createdAt };
-  todos.push(newTodo);
-  return res.send(newTodo);
-});
-
-app.patch('/todo/:id', (req, res) => {
-  const id = req.params.id;
-  const editTodo = req.body.editTodo;
-  const index = todos.findIndex((todo) => todo.id == id);
-  if (index > -1) {
-    const updateTodo = {
-      ...todos[index],
-      ...editTodo,
-      updatedAt: new Date().toISOString(),
-    };
-    todos[index] = updateTodo;
+app.get('/todos', (req: Request, res: Response) => {
+  try {
+    return res.send(todos);
+  } catch (error: any) {
+    res.send(error.message);
   }
-  return res.send(todos[index]);
 });
 
-app.delete('/todo/:id', (req, res) => {
-  const id = req.params.id;
-  const index = todos.findIndex((todo) => todo.id == id);
-  if (index > -1) {
-    todos.splice(index, 1);
+app.post('/todo', (req: Request, res: Response) => {
+  try {
+    const todo: Todo = req.body.todo;
+    const nextId: number = todos.length
+      ? Math.max(...todos.map((todo) => todo.id)) + 1
+      : 1;
+    const newTodo: Todo = { ...todo, id: nextId, updatedAt: todo.createdAt };
+    todos.push(newTodo);
+    return res.send(newTodo);
+  } catch (error: any) {
+    res.send(error.message);
   }
-  return res.send(id);
 });
 
-app.listen(PORT, console.log(`Server running on port ${PORT}`));
+app.patch('/todo/:id', (req: Request, res: Response) => {
+  try {
+    const id: number = parseInt(req.params.id);
+    const editTodo: EditTodo = req.body.editTodo;
+    const index = todos.findIndex((todo) => todo.id === id);
+    if (index > -1) {
+      const updateTodo = {
+        ...todos[index],
+        ...editTodo,
+        updatedAt: new Date().toISOString(),
+      };
+      todos[index] = updateTodo;
+    }
+    return res.send(todos[index]);
+  } catch (error: any) {
+    res.send(error.message);
+  }
+});
+
+app.delete('/todo/:id', (req: Request, res: Response) => {
+  try {
+    const id: number = parseInt(req.params.id);
+    const index = todos.findIndex((todo) => todo.id === id);
+    if (index > -1) {
+      todos.splice(index, 1);
+    }
+    return res.send(id.toString());
+  } catch (error: any) {
+    res.send(error.message);
+  }
+});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
