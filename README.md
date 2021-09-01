@@ -8,24 +8,30 @@
 
 `ducks pattern`으로 redux를 작성했습니다.
 
+`redux` 와 `redux-saga` 및 수정된 코드에 한하여 주석을 달았습니다.
+
 기존 리액트 프로젝트에 관한 README는 [여기서](https://github.com/team2-freeOnBorading/modu-todo) 보실 수 있습니다.
 
 ## 기능 이미지
 
 ### Todos 불러오기
+
 ![loadTodos](https://user-images.githubusercontent.com/45257139/131695318-a34eb778-f0cc-4bc3-9db0-1a4b9ef7b91e.png)
 첫번째 이미지는 서버에 임의로 넣어둔 todos를 불러옵니다.
 
 ### 새로운 Todo 생성
+
 ![createTodo](https://user-images.githubusercontent.com/45257139/131695931-076a58ac-ba4c-4362-9091-c115f9313da9.png)
 두번째 이미지는 "new todo"라는 task를 가진 Todo아이템을 새로 추가합니다.
 
 ### Todo 수정
+
 ![updateTodo](https://user-images.githubusercontent.com/45257139/131696052-188993ab-33aa-41b7-a3b7-b02635f847f2.png)
-새로 추가된 `new todo`를 `modified Todo`로 수정하고 
+새로 추가된 `new todo`를 `modified Todo`로 수정하고
 진행 상황을 `TODO`에서 `IN_PROGRESS`로 중요도를 `LOW`에서 `MEDIUM`으로 수정했습니다.
 
 ### Todo 삭제
+
 ![deleteTodo](https://user-images.githubusercontent.com/45257139/131696121-52bda121-9424-4627-afbb-b41d702cca0c.png)
 수정된 todo를 삭제했습니다.
 
