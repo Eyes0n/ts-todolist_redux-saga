@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Status, ITodo, Priority } from 'type';
-import { useLoadStorage, useSaveStorage } from 'hooks/useStorage';
 import TodoList from './TodoList/TodoList';
 import useModal from 'hooks/useModal';
 import DetailModal from 'components/common/Modal/DetailModal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'modules';
 import { useFilterAndSrot } from 'hooks/useFilterAndSort';
+import { loadTodos } from 'modules/todos';
 
 const defaultModal: ITodo = {
   id: 0,
@@ -22,13 +22,21 @@ const defaultModal: ITodo = {
 const TodoKanBan: React.FC = () => {
   const [modalVisible, openModal, closeModal] = useModal(false);
   const [detailTodo, setDetailTodo] = useState<ITodo | null>(null);
+  const dispatch = useDispatch();
 
-  useLoadStorage();
-  useSaveStorage();
+  useEffect(() => {
+    dispatch(loadTodos());
+  }, [dispatch]);
 
-  const todos = useSelector((state: RootState) => state.todos);
-  const filters = useSelector((state: RootState) => state.filter);
-  const sort = useSelector((state: RootState) => state.sort);
+  const {
+    todos: { todos },
+    filters,
+    sort,
+  } = useSelector(({ todos, filters, sort }: RootState) => ({
+    todos,
+    filters,
+    sort,
+  }));
 
   const modifiedTodos = useFilterAndSrot(todos, filters, sort);
 

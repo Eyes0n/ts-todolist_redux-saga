@@ -4,9 +4,14 @@ import App from './App';
 import GlobalStyle from './style/global';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import rootReducer from 'modules';
+import { applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import rootReducer, { rootSaga } from 'modules';
 
-const store = createStore(rootReducer);
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <React.StrictMode>
