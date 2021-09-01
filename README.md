@@ -6,6 +6,8 @@
 
 `contextAPI`와 `useReducer`조합에서 `redux & redux-saga`로 전환했습니다.
 
+`ducks pattern`으로 redux를 작성했습니다.
+
 기존 리액트 프로젝트에 관한 README는 [여기서](https://github.com/team2-freeOnBorading/modu-todo) 보실 수 있습니다.
 
 ## 기능 이미지
